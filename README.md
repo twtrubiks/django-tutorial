@@ -1,7 +1,7 @@
 # django-tutorial
  Django 基本教學 - 從無到有 Django-Beginners-Guide， 教你建立自己的第一個 [Django](https://github.com/django/django) 程式 📝
 
-* [Youtube Tutorial PART 1](https://youtu.be/o9k1THWOzlc)
+* [Youtube Tutorial PART 1](https://youtu.be/tB3kwu2E0GM)
 * [Youtube Tutorial PART 2](https://youtu.be/2LP5WvhXLUM)
 
 [Django](https://github.com/django/django)  非常強大，尤其是 [Django REST framework](http://www.django-rest-framework.org/) ( DRF )，打造 REST API 極為方便快速，
