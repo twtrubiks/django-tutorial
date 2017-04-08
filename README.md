@@ -3,7 +3,9 @@
 
 * [Youtube Tutorial 等待新增]()
 
-[Django](https://github.com/django/django)  非常強大，尤其是 [Django REST framework](http://www.django-rest-framework.org/) ( DRF )，打造 REST API 極為方便快速，在這裡先帶大家進入 [Django](https://github.com/django/django) 的世界  :smile:
+[Django](https://github.com/django/django)  非常強大，尤其是 [Django REST framework](http://www.django-rest-framework.org/) ( DRF )，打造 REST API 極為方便快速，
+
+在這裡先帶大家進入 [Django](https://github.com/django/django) 的世界  :smile:
 
 
 ## 教學
@@ -331,8 +333,13 @@ admin.site.register(Music)
 
 後記：
 
-我是先接觸 [Flask](http://flask.pocoo.org/)，後來才接觸到 [Django](https://github.com/django/django) ，有些人一開始應該也會和我一樣覺得 [Django](https://github.com/django/django) 的設定很多，非常麻煩，但其實了解他之後，會發現他並沒有想像中的那麼複雜，而且功能非常強大。
+我是先接觸 [Flask](http://flask.pocoo.org/)，後來才接觸到 [Django](https://github.com/django/django) ，
 
+有些人一開始應該也會和我一樣覺得 [Django](https://github.com/django/django) 的設定很多，非常麻煩，
+
+但其實了解他之後，會發現他並沒有想像中的那麼複雜，而且功能非常強大。
+
+下一步可以參考更酷更強大的 [Django-REST-framework 基本教學 - 從無到有 DRF-Beginners-Guide](https://github.com/twtrubiks/django-rest-framework-tutorial)
 
 
 ## 執行環境
