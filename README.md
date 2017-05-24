@@ -1,4 +1,5 @@
 # django-tutorial
+
  Django 基本教學 - 從無到有 Django-Beginners-Guide， 教你建立自己的第一個 [Django](https://github.com/django/django) 程式 📝
 
 * [Youtube Tutorial PART 1](https://youtu.be/tB3kwu2E0GM)
@@ -7,7 +8,6 @@
 [Django](https://github.com/django/django)  非常強大，尤其是 [Django REST framework](http://www.django-rest-framework.org/) ( DRF )，打造 REST API 極為方便快速，
 
 在這裡先帶大家進入 [Django](https://github.com/django/django) 的世界  :smile:
-
 
 ## 教學
 
@@ -31,7 +31,6 @@
 
 用 [PyCharm](https://www.jetbrains.com/pycharm/) 建立 project 還有一個好處，就是一些設定會先幚你設定好，不用全部重新自己動手設設定。
 
-
 ### 執行 Django
 
 直接點選 [PyCharm](https://www.jetbrains.com/pycharm/) 右上角執行程式 ( 一個是Debug模式 )，如下圖
@@ -52,7 +51,7 @@
 
 ### 建立 Django App
 
-先建立一個觀念，在 [Django](https://github.com/django/django) 中，通常我們會依照 <b>功能</b> 去建議一個 App ， 例如範例的 musics ，代表他是 管理音樂 的部份。
+先建立一個觀念，在 [Django](https://github.com/django/django) 中，通常我們會依照 **功能** 去建議一個 App ， 例如範例的 musics ，代表他是 管理音樂 的部份。
 
 有了這個觀念之後，我們動手開始做吧～
 
@@ -64,17 +63,17 @@
 
 ![alt tag](http://i.imgur.com/nn5YY8A.jpg)
 
-<b>建立完請記得要將 App 加入設定檔</b>
+***建立完請記得要將 App 加入設定檔***
 
-請在 settings.py 裡面的 <b>INSTALLED_APPS</b> 加入 musics (也就是你自己建立的 App 名稱)
+請在 settings.py 裡面的 **INSTALLED_APPS** 加入 musics (也就是你自己建立的 App 名稱)
 
 ![alt tag](http://i.imgur.com/LCPHObL.jpg)
 
 ### Views
 
-請先在 <b> templates </b> 裡面新增一個  <b> hello_django.html </b>，並在裡面輸入下方程式碼 (下圖)
+請先在 **templates** 裡面新增一個  **hello_django.html**，並在裡面輸入下方程式碼 (下圖)
 
-```
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -86,6 +85,7 @@
 </body>
 </html>
 ```
+
 ![alt tag](http://i.imgur.com/ULHqOBH.jpg)
 
 hello_django.html 裡面的第 8 行，只是透過  views.py 傳值過來而已。
@@ -94,7 +94,7 @@ hello_django.html 裡面的第 8 行，只是透過  views.py 傳值過來而已
 
 接著我們將 views.py 裡面新增下方程式碼  (下圖)
 
-```
+```python
 from django.shortcuts import render
 
 
@@ -112,11 +112,11 @@ def hello_view(request):
 
  注意，最後還必須設定 URLconf。
 
-
 ### URLconf
 
 請再將 urls.py 裡面增加一些程式碼，如下圖
-```
+
+```python
 from django.conf.urls import url
 from django.contrib import admin
 from musics.views import hello_view
@@ -150,7 +150,7 @@ urlpatterns = [
 
 首先，請先在 models.py 裡面增加下方程式碼 (下圖)
 
-```
+```python
 from django.db import models
 
 
@@ -182,7 +182,6 @@ auto_now : 資料有更新時會幚你自動加上更新的時間。
 
 ![alt tag](http://i.imgur.com/mmqLn9F.jpg)
 
-
 > python manage.py migrate
 
 ![alt tag](http://i.imgur.com/8sCX6x6.jpg)
@@ -195,7 +194,7 @@ migrate ： 根據 makemigrations 建立的檔案，去更新你的 DATABASE 。
 
 你可以使用[SQLiteBrowser](http://sqlitebrowser.org/) 或  [PyCharm](https://www.jetbrains.com/pycharm/) 觀看 DATABASE，
 
-你會發現多出一個 <b>music</b> 的 table ( 如下圖 )
+你會發現多出一個 **music** 的 table ( 如下圖 )
 
 ![alt tag](http://i.imgur.com/xVbTtjq.jpg)
 
@@ -238,8 +237,8 @@ migrate ： 根據 makemigrations 建立的檔案，去更新你的 DATABASE 。
 
 這是因為 models.py 裡的 song 以及 singer 有設定 default ，所以可以不用帶入參數。
 
-
 #### Read
+
 > Music.objects.all()
 
 ![alt tag](http://i.imgur.com/WTSzn2U.jpg)
@@ -252,6 +251,7 @@ migrate ： 根據 makemigrations 建立的檔案，去更新你的 DATABASE 。
 ![alt tag](http://i.imgur.com/jFCM1op.jpg)
 
 #### Update
+
 > data=Music.objects.filter(id=1)
 >
 > data.update(song='song_update')
@@ -263,6 +263,7 @@ migrate ： 根據 makemigrations 建立的檔案，去更新你的 DATABASE 。
 ![alt tag](http://i.imgur.com/OJT2UAT.jpg)
 
 #### Delete
+
 > data=Music.objects.filter(id=4)
 >
 > data.delete()
@@ -271,20 +272,20 @@ migrate ： 根據 makemigrations 建立的檔案，去更新你的 DATABASE 。
 
 執行完上述程式碼，就會發現資料被刪除了
 
-
 ### Admin Site
 
 [Django](https://github.com/django/django) 內建有後台管理介面。
 
 請先確定 settings.py 裡的 INSTALLED_APPS 裡有 django.contrib.admin
 
-```
+```python
 INSTALLED_APPS = [
     'django.contrib.admin',
     ......
 ]
 
 ```
+
 ![alt tag](http://i.imgur.com/y3lw5P7.jpg)
 
 設定 URL
@@ -303,7 +304,7 @@ INSTALLED_APPS = [
 
 請在 admin.py 裡面新增下方程式碼，這段程式碼只是去註冊 model 而已
 
-```
+```python
 from django.contrib import admin
 
 # Register your models here.
@@ -326,11 +327,7 @@ admin.site.register(Music)
 
 ![alt tag](http://i.imgur.com/DYrJBgk.jpg)
 
-
 恭喜你，基本上到這裡，已經是一個非常簡單的  [Django](https://github.com/django/django) 程式了，趕快動手下去玩玩吧 :stuck_out_tongue:
-
-
-
 
 後記：
 
@@ -342,13 +339,14 @@ admin.site.register(Music)
 
 下一步可以參考更酷更強大的 [Django-REST-framework 基本教學 - 從無到有 DRF-Beginners-Guide](https://github.com/twtrubiks/django-rest-framework-tutorial)
 
-
 ## 執行環境
+
 * Python 3.4.3
 
 ## Reference
+
 * [Django](https://www.djangoproject.com/)
 
-
 ## License
+
 MIT license
