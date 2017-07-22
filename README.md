@@ -339,6 +339,8 @@ admin.site.register(Music)
 
 下一步可以參考更酷更強大的 [Django-REST-framework 基本教學 - 從無到有 DRF-Beginners-Guide](https://github.com/twtrubiks/django-rest-framework-tutorial)
 
+或是使用 Django 實現一個可以使用社交平台登入並且註冊的網站 [django_social_login_tutorial](https://github.com/twtrubiks/django_social_login_tutorial)。
+
 ## 執行環境
 
 * Python 3.4.3
