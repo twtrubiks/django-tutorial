@@ -327,6 +327,37 @@ admin.site.register(Music)
 
 ![alt tag](http://i.imgur.com/DYrJBgk.jpg)
 
+#### Model Field.choices
+
+因為蠻實用的，所以加入  Model Field.choices ，使用方法可參考 [models.py](https://github.com/twtrubiks/django-tutorial/blob/master/musics/models.py)  以及 [hello_django.html](https://github.com/twtrubiks/django-tutorial/blob/master/templates/hello_django.html)，
+
+`Choice` ，可以透過 `get_FOO_display()` 的方法取得名稱，如下
+
+```python
+TYPE_CHOICES = (
+    ('T1', 'type 1'),
+    ('T2', 'type 2'),
+    ('T3', 'type 3'),
+    ('T4', 'type 4'),
+)
+
+class Music(models.Model):
+    ......
+    type = models.CharField(
+        max_length=2,
+        choices=TYPE_CHOICES,
+        default="T1"
+    )
+
+    class Meta:
+        db_table = "music"
+
+    def display_type_name(self):
+        return self.get_type_display()
+```
+
+詳細可參考 [https://docs.djangoproject.com/en/1.11/ref/models/fields/#choices](https://docs.djangoproject.com/en/1.11/ref/models/fields/#choices)
+
 恭喜你，基本上到這裡，已經是一個非常簡單的  [Django](https://github.com/django/django) 程式了，趕快動手下去玩玩吧 :stuck_out_tongue:
 
 後記：

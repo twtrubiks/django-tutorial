@@ -5,6 +5,14 @@
     <title>Title</title>
 </head>
 <body>
-    {{data}}
+{{ data }}
+{% for music in musics %}
+    <p>id : {{ music.id }}</p>
+    <p>song : {{ music.song }}</p>
+    <p>singer : {{ music.singer }}</p>
+    <p>type : {{ music.type }}</p>
+    <p>display_type_name : {{ music.display_type_name }}</p>
+{% endfor %}
+
 </body>
 </html>
