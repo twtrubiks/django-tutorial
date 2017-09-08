@@ -329,7 +329,7 @@ admin.site.register(Music)
 
 #### Model Field.choices
 
-因為蠻實用的，所以加入  Model Field.choices ，使用方法可參考 [models.py](https://github.com/twtrubiks/django-tutorial/blob/master/musics/models.py)  以及 [hello_django.html](https://github.com/twtrubiks/django-tutorial/blob/master/templates/hello_django.html)，
+因為蠻實用的，所以加入 Model Field.choices ，使用方法可參考 [models.py](https://github.com/twtrubiks/django-tutorial/blob/master/musics/models.py)  以及 [hello_django.html](https://github.com/twtrubiks/django-tutorial/blob/master/templates/hello_django.html)，
 
 `Choice` ，可以透過 `get_FOO_display()` 的方法取得名稱，如下
 
