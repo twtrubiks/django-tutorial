@@ -17,7 +17,9 @@
 
 請在你的命令提示字元 (cmd ) 底下輸入
 
->pip install django
+>pip install django==1.11.9
+
+( 會指定版本的原因是因為 **django 2.0** 開始有些東西不太一樣 )
 
 基本上安裝應該沒什麼問題，可以再使用 cmd 確認，如下圖
 
@@ -368,9 +370,25 @@ class Music(models.Model):
 
 但其實了解他之後，會發現他並沒有想像中的那麼複雜，而且功能非常強大。
 
-下一步可以參考更酷更強大的 [Django-REST-framework 基本教學 - 從無到有 DRF-Beginners-Guide](https://github.com/twtrubiks/django-rest-framework-tutorial)
+如果意猶未盡，延伸閱讀 :satisfied:
 
-或是使用 Django 實現一個可以使用社交平台登入並且註冊的網站 [django_social_login_tutorial](https://github.com/twtrubiks/django_social_login_tutorial)。
+* [Django-REST-framework 基本教學 - 從無到有 DRF-Beginners-Guide](https://github.com/twtrubiks/django-rest-framework-tutorial)
+
+* [django_social_login_tutorial](https://github.com/twtrubiks/django_social_login_tutorial) - 使用 Django 實現一個可以使用社交平台登入並且註冊的網站
+
+* [DRF-dataTable-Example-server-side](https://github.com/twtrubiks/DRF-dataTable-Example-server-side) - DataTables Example (server-side) - Python Django REST framework
+
+* [Django-shop-tutorial 基本教學 - 從無到有 Django-shop-tutorial 📝](https://github.com/twtrubiks/django-shop-tutorial) - 使用 Django 建立一個簡易版購物網站 😄
+
+* [django-celery-tutorial](https://github.com/twtrubiks/django-celery-tutorial) - 使用 Django 結合 Celery 😄
+
+* [django-recaptcha-tutorial](https://github.com/twtrubiks/django_recaptcha_tutorial) -  Django 結合 Google's reCAPTCHA 😄
+
+* [Deploying_Django_To_Heroku_Tutorial](https://github.com/twtrubiks/Deploying_Django_To_Heroku_Tutorial) - Deploying a Django App To Heroku Tutorial
+
+* [認識 Django OneToOneField , ForeignKey ,ManyToManyField](https://github.com/twtrubiks/django-field-tutorial)
+
+* [結合 Django + jQuery 實現無限捲軸 Infinite Scroll 📝](https://github.com/twtrubiks/ptt_beauty_infinite_scroll)
 
 ## 執行環境
 
