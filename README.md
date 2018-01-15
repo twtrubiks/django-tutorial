@@ -33,6 +33,16 @@
 
 用 [PyCharm](https://www.jetbrains.com/pycharm/) 建立 project 還有一個好處，就是一些設定會先幚你設定好，不用全部重新自己動手設設定。
 
+這邊補充一下，因為蠻多人詢問的:grimacing:
+
+上面這張圖的功能 ( 選項 )，只有 PyCharm Professional 才有這個功能，
+
+如果你是安裝一般的 PyCharm Community Edition，則沒有這個選項。
+
+但沒關係，可以使用指令的方式來建立，指令如下
+
+> django-admin startproject django_tutorial
+
 ### 執行 Django
 
 直接點選 [PyCharm](https://www.jetbrains.com/pycharm/) 右上角執行程式 ( 一個是Debug模式 )，如下圖
