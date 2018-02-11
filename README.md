@@ -370,6 +370,44 @@ class Music(models.Model):
 
 詳細可參考 [https://docs.djangoproject.com/en/1.11/ref/models/fields/#choices](https://docs.djangoproject.com/en/1.11/ref/models/fields/#choices)
 
+### Integrating Django with a legacy database
+
+如果說現在我們已經有一個 db，需要建立 model 讓他 map 到 db，這時候不可能手動一個一個打 :scream:
+
+好在 Django 有提供一個方法讓我們將既有的 db 轉化成 model ，我們只需要使用以下的指令
+
+```cmd
+python manage.py inspectdb > models.py
+```
+
+這時候你可以打開 models.py，你應該會看到 map 到你 db 的 model，類似如下
+
+```python
+class Music(models.Model):
+    id = models.IntegerField(primary_key=True)  # AutoField?
+    song = models.TextField()
+    singer = models.TextField()
+    last_modify_date = models.DateTimeField()
+    created = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'music'
+
+
+class Share(models.Model):
+    id = models.IntegerField(primary_key=True)  # AutoField?
+    name = models.TextField()
+    last_modify_date = models.DateTimeField()
+    created = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'share'
+```
+
+更多詳細的說明請參考 [Auto-generate the models](https://docs.djangoproject.com/en/1.11/howto/legacy-databases/#auto-generate-the-models)
+
 恭喜你，基本上到這裡，已經是一個非常簡單的  [Django](https://github.com/django/django) 程式了，趕快動手下去玩玩吧 :stuck_out_tongue:
 
 後記：
