@@ -9,6 +9,34 @@
 
 在這裡先帶大家進入 [Django](https://github.com/django/django) 的世界  :smile:
 
+## 簡介
+
+在開始手把手教大家動手做前，先來認識一下 Django 的設計模式，也就是 **MTV**，
+
+**Model** : 定義一些資料庫的東西 ( ORM )，這層通常是直接和資料有關。
+
+**Template** : 使用者基本上就是看到這層，也就是最後所呈現的 Template ( html )。
+
+**View** : 可以將這層看做是中間層，它主要負責 Model 和 Template 之間的業務邏輯。
+
+介紹了 Django 的設計模式，接下來你一定會問，那這有什麼好處 :question:
+
+最直接的好處就是，我們可以很明確且很快速的知道問題在哪裡，例如，今天可能頁面出了問題，
+
+這樣我們就會知道要先去 template 中找問題，而如果是關於資料庫的問題，則可能就要先去 Model
+
+中找，總之，就是不會像一隻無頭蒼蠅一樣不知道要去哪裡找問題:relaxed:
+
+最後簡單將 Django 的 MTV 和 ASP.NET 中的 MVC 比較一下，
+
+| MTV                 | MVC            |
+|---------------------|----------------|
+| Model           | Model      |
+| Template        | View   |
+| View            |  Controller      |
+
+其實可以將 MTV 想成算是 MVC 的變形 :smirk:
+
 ## 教學
 
 請先確認電腦有安裝 [Python](https://www.python.org/)
