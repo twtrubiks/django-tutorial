@@ -17,6 +17,9 @@ from django.conf.urls import url
 from django.contrib import admin
 from musics.views import hello_view
 
+handler404 = "django_tutorial.views.error_views.view_404"
+handler500 = "django_tutorial.views.error_views.view_500"
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^hello/', hello_view),

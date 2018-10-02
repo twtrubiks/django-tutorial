@@ -438,7 +438,82 @@ class Share(models.Model):
 
 恭喜你，基本上到這裡，已經是一個非常簡單的  [Django](https://github.com/django/django) 程式了，趕快動手下去玩玩吧 :stuck_out_tongue:
 
-後記：
+### How to create customizing error pages
+
+[Youtube Tutorial - How to create customizing error pages](https://youtu.be/vUwuWc0nl3s)
+
+這部份教大家如何建立自己的 404 not found page 以及 500 error page，
+
+先到 [django_tutorial/settings.py](https://github.com/twtrubiks/django-tutorial/blob/master/django_tutorial/settings.py) 中設定幾個東西，
+
+分別是 `DEBUG` 和 `ALLOWED_HOSTS` ( 這兩個設定是為了顯示 error pages )，
+
+`INSTALLED_APPS` ( 這個則是為了要讓他找的到 template )，範例如下，
+
+```python
+DEBUG = False
+
+ALLOWED_HOSTS = ['*']
+
+
+# Application definition
+
+INSTALLED_APPS = [
+    .....
+    'django_tutorial',
+]
+
+```
+
+補充，預設為 `DEBUG = True`，這時候 django 會使用 standard 404 debug template，所以要記得修改。
+
+建立 templates 資料夾，在底下建立 [page_404.html](https://github.com/twtrubiks/django-tutorial/blob/master/django_tutorial/templates/django_tutorial/error_pages/page_404.html) 以及 [page_500.html](https://github.com/twtrubiks/django-tutorial/blob/master/django_tutorial/templates/django_tutorial/error_pages/page_500.html)，
+
+然後再建立一個 views 資料夾，底下建立 [error_views.py](https://github.com/twtrubiks/django-tutorial/blob/master/django_tutorial/views/error_views.py)，範例如下，
+
+```python
+from django.shortcuts import render
+
+
+def view_404(request):
+    return render(request, 'django_tutorial/error_pages/page_404.html', status=404)
+
+
+def view_500(request):
+    return render(request, 'django_tutorial/error_pages/page_500.html', status=500)
+```
+
+整個資料夾的結構會像下圖這樣，
+
+![alt tag](https://i.imgur.com/kkpx5so.png)
+
+這邊補充說明一下，前面在 INSTALLED_APPS 中設定 `django_tutorial`，
+
+主要就是為了讓他可以抓到 `django_tutorial/error_pages/page_404.html`。
+
+[error_views.py](https://github.com/twtrubiks/django-tutorial/blob/master/django_tutorial/views/error_views.py) 你也可以模仿 django 的 source code，可參考 [django/views/defaults.py](https://github.com/django/django/blob/master/django/views/defaults.py)，
+
+我是用比較偷懶快速的寫法:smiley:
+
+最後就是在 [django_tutorial/urls.py](https://github.com/twtrubiks/django-tutorial/blob/master/django_tutorial/urls.py) 設定 handler404 以及 handler500，
+
+因為我們已經設定好 `view_404` 以及 `view_500` 了，所以只需要去 overridden，
+
+[django_tutorial/urls.py](https://github.com/twtrubiks/django-tutorial/blob/master/django_tutorial/urls.py) 可參考如下，
+
+```python
+....
+
+handler404 = "django_tutorial.views.error_views.view_404"
+handler500 = "django_tutorial.views.error_views.view_500"
+
+....
+
+```
+
+更多詳細資料可參考 [customizing-error-views](https://docs.djangoproject.com/en/1.11/topics/http/views/#customizing-error-views)。
+
+## 後記
 
 我是先接觸 [Flask](http://flask.pocoo.org/)，後來才接觸到 [Django](https://github.com/django/django) ，
 
