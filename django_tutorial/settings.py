@@ -75,18 +75,32 @@ WSGI_APPLICATION = "django_tutorial.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
+
+DATABASE_ROUTERS = [
+    'my_router.rotuer_1.Router1',
+]
 
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'password123',
+        'HOST': 'localhost',
+        'PORT': 5432,
+    },
+    'primary': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'primary_db',
+        'USER': 'postgres',
+        'PASSWORD': 'password123',
+        'HOST': 'localhost',
+        'PORT': 5432,
+    },
+    'readonly': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'readonly_db',
         'USER': 'postgres',
         'PASSWORD': 'password123',
         'HOST': 'localhost',
