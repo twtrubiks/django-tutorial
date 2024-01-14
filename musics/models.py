@@ -1,11 +1,11 @@
 from django.db import models
 
 class Sheet(models.Model):
-    name = models.CharField(default="sheet name")
+    name = models.CharField(default="sheet name", max_length=50)
 
 class Music(models.Model):
     song = models.TextField(default="song")
-    singer = models.TextField(default="AKB48")
+    singer = models.TextField(default="singer")
     count = models.IntegerField(blank=True, null=True)
     last_modify_date = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
