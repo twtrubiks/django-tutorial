@@ -64,6 +64,8 @@ python3 manage.py loaddata db.json
 
 ## Django ORM
 
+更多 django orm 的用法可參考 [querysets](https://docs.djangoproject.com/en/5.0/ref/models/querysets/)
+
 先介紹 `Q` 這個東西, 這個的目的主要是處理更複雜的邏輯運算
 
 ```cmd
@@ -169,6 +171,13 @@ This is similar to values() except that instead of returning dictionaries, it re
 >>> from musics.models import Music
 >>> Music.objects.filter(id=2).values_list('id', 'song')
 <QuerySet [(2, 'test_data')]>
+
+>>> Music.objects.filter(id=2).values_list('id', flat=True)
+<QuerySet [2]>
+
+# there is more than one field
+>>> Music.objects.filter(id=2).values_list('id', 'song', named=True)
+<QuerySet [Row(id=2, song='test_data')]>
 ```
 
 `aggregate`
@@ -261,6 +270,119 @@ SELECT "music"."id",
  LIMIT 21
 Execution time: 0.000468s [Database: default]
 <QuerySet [(1, '5%'), (2, '10%'), (3, '0%')]>
+```
+
+`bulk-create`
+
+[bulk-create](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#bulk-create)
+
+```python
+from musics.models import Music
+Music.objects.bulk_create([
+    Music(song="song11", singer="singer11"),
+    Music(song="song22", singer="singer22"),
+])
+```
+
+對應的原生 sql 如下,
+
+```sql
+INSERT INTO "music" ("song", "singer", "count", "last_modify_date", "created", "sheet_id")
+VALUES ('song11', 'singer11', NULL, '2024-04-09 12:04:46.046720', '2024-04-09 12:04:46.046765', NULL), ('song22', 'singer22', NULL, '2024-04-09 12:04:46.046796', '2024-04-09 12:04:46.046811', NULL)
+```
+
+還有一個 batch_size 可以使用, 用來完成批次(一次最多新增幾比).
+
+例如
+
+```python
+Music.objects.bulk_create([
+    Music(song="song11", singer="singer11"),
+    Music(song="song22", singer="singer22"),
+    Music(song="song33", singer="singer33"),
+    Music(song="song44", singer="singer44"),
+], 2)
+```
+
+如果你看原生 SQL 你會發現執行了兩個 INSERT INTO.
+
+`bulk-update`
+
+[bulk-update](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#bulk-update)
+
+```python
+from musics.models import Music
+musics = []
+for index, music in enumerate(Music.objects.all()):
+    music.song = f"song_{index}"
+    musics.append(music)
+
+bulk_update_count = Music.objects.bulk_update(musics, ['song'])
+```
+
+bulk_update_count 會回傳更新的比數.
+
+對應的原生 sql 如下,
+
+```sql
+UPDATE "music"
+   SET "song" =
+      CASE WHEN ("music"."id" = 1) THEN 'song_0'
+           WHEN ("music"."id" = 2) THEN 'song_1'
+      ELSE NULL
+      END
+ WHERE "music"."id" IN (1, 2)
+```
+
+`get_or_create`
+
+[get_or_create](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#get-or-create)
+
+如果有符合的資料且只有一比就回傳, 沒有的話就建立.
+
+```python
+from musics.models import Music
+obj, created = Music.objects.get_or_create(song="song113")
+```
+
+obj 會回傳物件, created 則會回傳是否有建立.
+
+為了避免 concurrent requests 的錯誤, 透過 get_or_create 會更好,
+
+如果今天多比被找到, 會跳出 raises MultipleObjectsReturned.
+
+`update_or_create`
+
+[update_or_create](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#get-or-create)
+
+
+```python
+from musics.models import Music
+obj, created = Music.objects.update_or_create(
+    song="song113",
+    defaults={"song": "song_default"},
+)
+```
+
+obj 會回傳物件, created 則會回傳是否有建立.
+
+如果找到 song 為 song113, 就將找到的單比的 song 更新為 song_default,
+
+如果沒找到, 就用 create_defaults 裡面的內容建立,
+
+如果今天多比被找到, 會跳出 raises MultipleObjectsReturned.
+
+`in-bulk`
+
+[in-bulk](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#in-bulk)
+
+```python
+from musics.models import Music
+Music.objects.in_bulk([1, 2])
+# {1: <Music: Music object (1)>, 2: <Music: Music object (2)>}
+
+# 如果沒有指定, 會找出全部的
+Music.objects.in_bulk()
 ```
 
 ## 執行環境
