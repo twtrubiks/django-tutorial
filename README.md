@@ -9,6 +9,18 @@
 
 在這裡先帶大家進入 [Django](https://github.com/django/django) 的世界  :smile:
 
+- [django4_and_orm](https://github.com/twtrubiks/django-tutorial/tree/django4_and_orm) - ORM Lock 操作.
+
+- [django4_custom_management_commands](https://github.com/twtrubiks/django-tutorial/tree/django4_custom_management_commands) - custom management commands
+
+- [django4_multi_db](https://github.com/twtrubiks/django-tutorial/tree/django4_multi_db) - 介紹 Multiple databases
+
+- [django_contenttypes](https://github.com/twtrubiks/django-tutorial/tree/django_contenttypes) - 介紹 content types
+
+- [django5-managers](https://github.com/twtrubiks/django-tutorial/tree/django5-managers) - 介紹 managers
+
+- [django_pytest](https://github.com/twtrubiks/django_pytest_tutorial) - 介紹 django pytest
+
 ## 簡介
 
 在開始手把手教大家動手做前，先來認識一下 Django 的設計模式，也就是 **MTV**，
