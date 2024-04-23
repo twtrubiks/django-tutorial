@@ -252,6 +252,26 @@ migrate ： 根據 makemigrations 建立的檔案，去更新你的 DATABASE 。
 
 這是因為 Django 預設會幫你帶入，所以可以不用設定。
 
+‼ 這邊提一個狀況, 就是如果你手動去刪除 migrations 資料夾,
+
+然後你重新執行了 `makemigrations`, 正常產生資料夾,
+
+然後你又執行了 `migrate`, 你會發現他說沒有任何改變.
+
+原因是, 在 db 底下的 django_migrations 這張 table 會去紀錄
+
+```sql
+SELECT * FROM public.django_migrations
+```
+
+類似 0001_initial 這樣的東西, 然後正常應該要變 0002_xxx 之類的,
+
+可是現在還是 0001_initial, 所以系統會認為沒有更新, 所以沒有變化,
+
+這時候你需要手動刪除對應的 app name 的那比 record(從資料庫刪除),
+
+然後重新執行 `migrate` 即可.
+
 ### Django ORM
 
 先了解什麼是 CRUD ，他分別代表 Create, Retrieve, Update, Delete，
