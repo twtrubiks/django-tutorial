@@ -1,549 +1,972 @@
-# django-tutorial
+# django-orm-tutorial
 
- Django 基本教學 - 從無到有 Django-Beginners-Guide， 教你建立自己的第一個 [Django](https://github.com/django/django) 程式 📝
+使用 djagno `5.0.6` 加上透過 `django-extensions` 觀察 ORM 實際 SQL,
 
-* [Youtube Tutorial PART 1](https://youtu.be/tB3kwu2E0GM)
-* [Youtube Tutorial PART 2](https://youtu.be/2LP5WvhXLUM)
-
-[Django](https://github.com/django/django)  非常強大，尤其是 [Django REST framework](http://www.django-rest-framework.org/) ( DRF )，打造 REST API 極為方便快速，
-
-在這裡先帶大家進入 [Django](https://github.com/django/django) 的世界  :smile:
-
-## 簡介
-
-在開始手把手教大家動手做前，先來認識一下 Django 的設計模式，也就是 **MTV**，
-
-**Model** : 定義一些資料庫的東西 ( ORM )，這層通常是直接和資料有關。
-
-**Template** : 使用者基本上就是看到這層，也就是最後所呈現的 Template ( html )。
-
-**View** : 可以將這層看做是中間層，它主要負責 Model 和 Template 之間的業務邏輯。
-
-介紹了 Django 的設計模式，接下來你一定會問，那這有什麼好處 :question:
-
-最直接的好處就是，我們可以很明確且很快速的知道問題在哪裡，例如，今天可能頁面出了問題，
-
-這樣我們就會知道要先去 template 中找問題，而如果是關於資料庫的問題，則可能就要先去 Model
-
-中找，總之，就是不會像一隻無頭蒼蠅一樣不知道要去哪裡找問題:relaxed:
-
-最後簡單將 Django 的 MTV 和 ASP.NET 中的 MVC 比較一下，
-
-| MTV                 | MVC            |
-|---------------------|----------------|
-| Model           | Model      |
-| Template        | View   |
-| View            |  Controller      |
-
-其實可以將 MTV 想成算是 MVC 的變形 :smirk:
-
-## 教學
-
-請先確認電腦有安裝 [Python](https://www.python.org/)
-
-接著我們安裝 [Django](https://github.com/django/django)
-
-請在你的命令提示字元 (cmd ) 底下輸入
-
->pip install django==1.11.9
-
-( 會指定版本的原因是因為 **django 2.0** 開始有些東西不太一樣 )
-
-基本上安裝應該沒什麼問題，可以再使用 cmd 確認，如下圖
-
-![alt tag](http://i.imgur.com/O0esVe9.jpg)
-
-### 建立 Django Project
-
-建議直接安裝 [PyCharm](https://www.jetbrains.com/pycharm/) ，然後新增一個 Django Project
-
-![alt tag](http://i.imgur.com/ZVOUmVb.jpg)
-
-用 [PyCharm](https://www.jetbrains.com/pycharm/) 建立 project 還有一個好處，就是一些設定會先幚你設定好，不用全部重新自己動手設設定。
-
-這邊補充一下，因為蠻多人詢問的:grimacing:
-
-上面這張圖的功能 ( 選項 )，只有 PyCharm Professional 才有這個功能，
-
-如果你是安裝一般的 PyCharm Community Edition，則沒有這個選項。
-
-但沒關係，可以使用指令的方式來建立，指令如下
-
-> django-admin startproject django_tutorial
-
-### 執行 Django
-
-直接點選 [PyCharm](https://www.jetbrains.com/pycharm/) 右上角執行程式 ( 一個是Debug模式 )，如下圖
-
-![alt tag](http://i.imgur.com/CWDVlnj.jpg)
-
-正常來說，如果沒有任何錯誤，去瀏覽 [http://127.0.0.1:8000/](http://127.0.0.1:8000/)  可以看到下圖，
-
-![alt tag](http://i.imgur.com/qhgX4Tz.jpg)
-
-如果你沒有安裝 [PyCharm](https://www.jetbrains.com/pycharm/) 或你喜歡下指令，就必須在命令提示字元 (cmd ) 底下輸入
-
->python manage.py runserver
-
-![alt tag](http://i.imgur.com/PxvPJ9m.jpg)
-
-恭喜你~   成功第一步了   :smile:
-
-### 建立 Django App
-
-先建立一個觀念，在 [Django](https://github.com/django/django) 中，通常我們會依照 **功能** 去建議一個 App ， 例如範例的 musics ，代表他是 管理音樂 的部份。
-
-有了這個觀念之後，我們動手開始做吧～
-
-請在你的命令提示字元 (cmd ) 底下輸入
-
->python manage.py startapp musics
-
-如果順利執行，你會發現你的專案內多出一個 musics 資料夾
-
-![alt tag](http://i.imgur.com/nn5YY8A.jpg)
-
-***建立完請記得要將 App 加入設定檔***
-
-請在 settings.py 裡面的 **INSTALLED_APPS** 加入 musics (也就是你自己建立的 App 名稱)
-
-![alt tag](http://i.imgur.com/LCPHObL.jpg)
-
-### Views
-
-請先在 **templates** 裡面新增一個  **hello_django.html**，並在裡面輸入下方程式碼 (下圖)
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    {{data}}
-</body>
-</html>
-```
-
-![alt tag](http://i.imgur.com/ULHqOBH.jpg)
-
-hello_django.html 裡面的第 8 行，只是透過  views.py 傳值過來而已。
-
-關於第 8 行 的用法，更多可以參考 [Django Templates](https://docs.djangoproject.com/en/1.10/ref/templates/)。
-
-接著我們將 views.py 裡面新增下方程式碼  (下圖)
-
-```python
-from django.shortcuts import render
-
-
-# Create your views here.
-def hello_view(request):
-    return render(request, 'hello_django.html', {
-        'data': "Hello Django ",
-    })
-
-```
-
-![alt tag](http://i.imgur.com/obbdTH4.jpg)
-
- views.py 裡面的第 7 行，就是回傳給 hello_django.html 的資料。
-
- 注意，最後還必須設定 URLconf。
-
-### URLconf
-
-請再將 urls.py 裡面增加一些程式碼，如下圖
-
-```python
-from django.conf.urls import url
-from django.contrib import admin
-from musics.views import hello_view
-
-urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^hello/', hello_view),
-]
-
-```
-
-![alt tag](http://i.imgur.com/YOjwZyE.jpg)
-
-簡單講，就是將 views.py import 進來 (第 18 行)，
-
-並且設定他的 URL (第 22 行)
-
-最後執行 Django ， 然後瀏覽  [http://127.0.0.1:8000/hello/](http://127.0.0.1:8000/hello/)
-
-你應該會看到如下圖
-
-![alt tag](http://i.imgur.com/Wd79870.jpg)
-
-接下來我們來看 Models
-
-### Models
-
-定義出資料庫中的結構（schema），並且透過 Django 中的指令去建立資料庫。
-
-[Django](https://github.com/django/django) 預設是使用 [SQLite](https://www.sqlite.org/) ，如果想要修改為其他的資料庫，可以在 settings.py  裡面進行修改。
-
-首先，請先在 models.py 裡面增加下方程式碼 (下圖)
-
-```python
-from django.db import models
-
-
-# Create your models here.
-class Music(models.Model):
-    song = models.TextField(default="song")
-    singer = models.TextField(default="AKB48")
-    last_modify_date = models.DateTimeField(auto_now=True)
-    created = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        db_table = "music"
-
-```
-
-default : 代表默認值，也就是如果你沒有指定的話會用默認值。
-
-auto_now_add : 新增時會幚你自動加上建立時間。
-
-auto_now : 資料有更新時會幚你自動加上更新的時間。
-
-更多可以參考 [Django fields](https://docs.djangoproject.com/en/1.10/ref/models/fields/)
-
-![alt tag](http://i.imgur.com/cyjgYp5.jpg)
-
-接著在命令提示字元 (cmd ) 底下輸入
-
->python manage.py makemigrations
-
-![alt tag](http://i.imgur.com/mmqLn9F.jpg)
-
-> python manage.py migrate
-
-![alt tag](http://i.imgur.com/8sCX6x6.jpg)
-
-makemigrations ： 會幚你建立一個檔案，去記錄你更新了哪些東西。
-
-migrate ： 根據 makemigrations 建立的檔案，去更新你的 DATABASE 。
-
-執行完上面的指令之後，
-
-你可以使用[SQLiteBrowser](http://sqlitebrowser.org/) 或  [PyCharm](https://www.jetbrains.com/pycharm/) 觀看 DATABASE，
-
-你會發現多出一個 **music** 的 table ( 如下圖 )
-
-![alt tag](http://i.imgur.com/xVbTtjq.jpg)
-
-有沒有注意到我們明明在 models.py 裡面就沒有輸入 id ，可是 database 裡面卻有 id 欄位，
-
-這是因為 Django 預設會幫你帶入，所以可以不用設定。
-
-### Django ORM
-
-先了解什麼是 CRUD ，他分別代表 Create, Retrieve, Update, Delete，
-
-[Django QuerySet API](https://docs.djangoproject.com/en/1.10/ref/models/querysets/) 可以讓你簡單的處理 CRUD 。
-
-直接使用 Python Console 簡單介紹 Django ORM
-
-![alt tag](http://i.imgur.com/JuBjDPR.jpg)
-
-記得必須先 import 你的 models
-
-> from musics.models import Music
-
-![alt tag](http://i.imgur.com/Bog2YmN.jpg)
-
-#### Create
-
-![alt tag](http://i.imgur.com/mPwY3o7.jpg)
-
-> Music.objects.create(song='song1', singer='SKE48')
-
-用[SQLiteBrowser](http://sqlitebrowser.org/) 或  [PyCharm](https://www.jetbrains.com/pycharm/) 觀看 DATABASE，如下圖，成功多了一比資料
-![alt tag](http://i.imgur.com/aemyLiy.jpg)
-
-或者
-
-> Music.objects.create()
-
-![alt tag](http://i.imgur.com/VHQs5ts.jpg)
-
-為什麼沒帶參數也可以新增呢?
-
-這是因為 models.py 裡的 song 以及 singer 有設定 default ，所以可以不用帶入參數。
-
-#### Read
-
-> Music.objects.all()
-
-![alt tag](http://i.imgur.com/WTSzn2U.jpg)
-
-> Music.objects.get(pk=3)
-
-![alt tag](http://i.imgur.com/QACYB8x.jpg)
-> Music.objects.filter(id=1)
-
-![alt tag](http://i.imgur.com/jFCM1op.jpg)
-
-#### Update
-
-> data=Music.objects.filter(id=1)
->
-> data.update(song='song_update')
-
-![alt tag](http://i.imgur.com/Dk1rsv3.jpg)
-
-執行完上述程式碼，就會發現資料被更新了 ( 如下圖 )
-
-![alt tag](http://i.imgur.com/OJT2UAT.jpg)
-
-#### Delete
-
-> data=Music.objects.filter(id=4)
->
-> data.delete()
-
-![alt tag](http://i.imgur.com/shWLKwn.jpg)
-
-執行完上述程式碼，就會發現資料被刪除了
-
-### Admin Site
-
-[Django](https://github.com/django/django) 內建有後台管理介面。
-
-請先確定 settings.py 裡的 INSTALLED_APPS 裡有 django.contrib.admin
-
-```python
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    ......
-]
-
-```
-
-![alt tag](http://i.imgur.com/y3lw5P7.jpg)
-
-設定 URL
-
-![alt tag](http://i.imgur.com/FIfOnls.jpg)
-
-接著使用命令提示字元 (cmd ) 建立超級使用者
-
->python manage.py createsuperuser
-
-![alt tag](http://i.imgur.com/wqacaCR.jpg)
-
-#### 註冊 model
-
-我們可以註冊 model，讓後台可以操作 database
-
-請在 admin.py 裡面新增下方程式碼，這段程式碼只是去註冊 model 而已
-
-```python
-from django.contrib import admin
-
-# Register your models here.
-from django.contrib import admin
-from musics.models import Music
-
-admin.site.register(Music)
-
-```
-
-![alt tag](http://i.imgur.com/A8k8rQc.jpg)
-
-接著執行 Django ，然後到  [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)，
-
-應該會看到下圖，我的 帳號/密碼 設定為 twtrubiks/password123
-
-![alt tag](http://i.imgur.com/vFrjyzs.jpg)
-
-現在，你可以在裡面對 Musics 執行 新增、查詢、修改、刪除 (CRUD)，也可以管理使用者。
-
-![alt tag](http://i.imgur.com/DYrJBgk.jpg)
-
-#### Model Field.choices
-
-因為蠻實用的，所以加入 Model Field.choices ，使用方法可參考 [models.py](https://github.com/twtrubiks/django-tutorial/blob/master/musics/models.py)  以及 [hello_django.html](https://github.com/twtrubiks/django-tutorial/blob/master/templates/hello_django.html)，
-
-`Choice` ，可以透過 `get_FOO_display()` 的方法取得名稱，如下
-
-```python
-TYPE_CHOICES = (
-    ('T1', 'type 1'),
-    ('T2', 'type 2'),
-    ('T3', 'type 3'),
-    ('T4', 'type 4'),
-)
-
-class Music(models.Model):
-    ......
-    type = models.CharField(
-        max_length=2,
-        choices=TYPE_CHOICES,
-        default="T1"
-    )
-
-    class Meta:
-        db_table = "music"
-
-    def display_type_name(self):
-        return self.get_type_display()
-```
-
-詳細可參考 [https://docs.djangoproject.com/en/1.11/ref/models/fields/#choices](https://docs.djangoproject.com/en/1.11/ref/models/fields/#choices)
-
-### Integrating Django with a legacy database
-
-如果說現在我們已經有一個 db，需要建立 model 讓他 map 到 db，這時候不可能手動一個一個打 :scream:
-
-好在 Django 有提供一個方法讓我們將既有的 db 轉化成 model ，我們只需要使用以下的指令
+進入 shell 模式, 請使用以下指令
 
 ```cmd
-python manage.py inspectdb > models.py
+python3 manage.py shell_plus --print-sql
 ```
 
-這時候你可以打開 models.py，你應該會看到 map 到你 db 的 model，類似如下
+如果你不想要透過 `django-extensions` 這個指令,
+
+可以使用 `str(queryset.query)` 查看 SQL 指令.
+
+如果進入 shell 模式, 但方向鍵會印出很多奇怪的字符,
+
+像是這樣 `^[[C^[[A^[[A^[[D^[[B^[`
+
+請安裝以下套件進行修正
+
+```cmd
+pip3 install gnureadline
+```
+
+## Django 匯入匯出
+
+dumpdata 和 loaddata 是 django 提供匯入匯出的一個工具.
+
+- 匯出
+
+官網可參考 [dumpdata](https://docs.djangoproject.com/en/5.0/ref/django-admin/#dumpdata)
+
+```cmd
+python manage.py dumpdata > db.json
+```
+
+也可以指定匯出的個格式, 例如匯出 yaml
+
+```cmd
+python3 manage.py dumpdata musics --format yaml > db.yaml
+```
+
+匯出特定的 table
+
+```cmd
+python3 manage.py dumpdata musics > db.json
+```
+
+- 匯入
+
+官網可參考 [loaddata](https://docs.djangoproject.com/en/5.0/ref/django-admin/#loaddata)
+
+```cmd
+python manage.py loaddata db.json
+```
+
+請執行以下指令匯入 demo 資料
+
+```cmd
+python3 manage.py makemigrations musics
+python3 manage.py migrate
+python3 manage.py loaddata db.json
+```
+
+## Django ORM
+
+更多 django orm 的用法可參考 [querysets](https://docs.djangoproject.com/en/5.0/ref/models/querysets/)
+
+先介紹 `Q` 這個東西, 這個的目的主要是處理更複雜的邏輯運算
+
+可參考 [Complex lookups with Q objects](https://docs.djangoproject.com/en/5.0/topics/db/queries/#complex-lookups-with-q-objects)
 
 ```python
-class Music(models.Model):
-    id = models.IntegerField(primary_key=True)  # AutoField?
-    song = models.TextField()
-    singer = models.TextField()
-    last_modify_date = models.DateTimeField()
-    created = models.DateTimeField()
+>>> from django.db.models import Q
+>>> # 透過 Q 建立查詢條件
+>>> condition1 = Q(song__icontains="test")
+>>> condition2 = Q(created__gte="2023-01-01")
+>>> condition3 = Q(count=3)
+>>> # 查詢 song 包含 "test" 並且 created 大於等於 2023-01-01 或者 count 等於 3
+>>> combined_condition = condition1 & condition2 | condition3
+>>> Music.objects.filter(combined_condition)
 
-    class Meta:
-        managed = False
-        db_table = 'music'
+SELECT "music"."id",
+       "music"."song",
+       "music"."singer",
+       "music"."count",
+       "music"."last_modify_date",
+       "music"."created",
+       "music"."sheet_id",
+       "music"."localization"
+  FROM "music"
+ WHERE ((UPPER("music"."song"::text) LIKE UPPER('%test%') AND "music"."created" >= '2023-01-01T00:00:00+00:00'::timestamptz) OR "music"."count" = 3)
 
-
-class Share(models.Model):
-    id = models.IntegerField(primary_key=True)  # AutoField?
-    name = models.TextField()
-    last_modify_date = models.DateTimeField()
-    created = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'share'
+<QuerySet [<Music: Music object (2)>, <Music: Music object (3)>]>
 ```
 
-更多詳細的說明請參考 [Auto-generate the models](https://docs.djangoproject.com/en/1.11/howto/legacy-databases/#auto-generate-the-models)
-
-恭喜你，基本上到這裡，已經是一個非常簡單的  [Django](https://github.com/django/django) 程式了，趕快動手下去玩玩吧 :stuck_out_tongue:
-
-### How to create customizing error pages
-
-[Youtube Tutorial - How to create customizing error pages](https://youtu.be/vUwuWc0nl3s)
-
-這部份教大家如何建立自己的 404 not found page 以及 500 error page，
-
-先到 [django_tutorial/settings.py](https://github.com/twtrubiks/django-tutorial/blob/master/django_tutorial/settings.py) 中設定幾個東西，
-
-分別是 `DEBUG` 和 `ALLOWED_HOSTS` ( 這兩個設定是為了顯示 error pages )，
-
-`INSTALLED_APPS` ( 這個則是為了要讓他找的到 template )，範例如下，
+Q objects can be negated using the `~` operator, 也就是 not 的意思
 
 ```python
-DEBUG = False
+>>> from django.db.models import Q
+>>> Music.objects.filter(~Q(count=3)).values('id')
+SELECT "music"."id"
+  FROM "music"
+ WHERE NOT ("music"."count" = 3 AND "music"."count" IS NOT NULL)
 
-ALLOWED_HOSTS = ['*']
-
-
-# Application definition
-
-INSTALLED_APPS = [
-    .....
-    'django_tutorial',
-]
-
+<QuerySet [{'id': 1}, {'id': 2}, {'id': 4}]>
 ```
 
-補充，預設為 `DEBUG = True`，這時候 django 會使用 standard 404 debug template，所以要記得修改。
-
-建立 templates 資料夾，在底下建立 [page_404.html](https://github.com/twtrubiks/django-tutorial/blob/master/django_tutorial/templates/django_tutorial/error_pages/page_404.html) 以及 [page_500.html](https://github.com/twtrubiks/django-tutorial/blob/master/django_tutorial/templates/django_tutorial/error_pages/page_500.html)，
-
-然後再建立一個 views 資料夾，底下建立 [error_views.py](https://github.com/twtrubiks/django-tutorial/blob/master/django_tutorial/views/error_views.py)，範例如下，
+介紹 `F` 這個東西, 他是針對特定的 fields 進行操作
 
 ```python
-from django.shortcuts import render
+>>> from musics.models import Music
+>>> from django.db.models import F, Value
+>>> from django.db.models.functions import Concat
+>>> # 將全部的 song 字段 加上 "_data"
+>>> Music.objects.update(song=Concat(F('song'),Value('_data')))
+UPDATE "music"
+   SET "song" = COALESCE("music"."song", '') || COALESCE('_data', '')
+3
 
-
-def view_404(request):
-    return render(request, 'django_tutorial/error_pages/page_404.html', status=404)
-
-
-def view_500(request):
-    return render(request, 'django_tutorial/error_pages/page_500.html', status=500)
+>>> # 將全部的 count 字段 加上 100
+>>> Music.objects.update(count=F('count')+ 100)
+UPDATE "music"
+   SET "count" = ("music"."count" + 100)
+3
 ```
 
-整個資料夾的結構會像下圖這樣，
+介紹 [ArrayField](https://docs.djangoproject.com/en/5.0/ref/contrib/postgres/fields/#arrayfield)
 
-![alt tag](https://i.imgur.com/kkpx5so.png)
+假如想要過濾 tags, 有包含 0 或 7 或 3
 
-這邊補充說明一下，前面在 INSTALLED_APPS 中設定 `django_tutorial`，
+範例資料如下
 
-主要就是為了讓他可以抓到 `django_tutorial/error_pages/page_404.html`。
+```sql
+postgres=# SELECT * FROM public.music_tag;
+ id |  tags   | music_id
+----+---------+----------
+  1 | {2,3}   |        4
+  2 | {4,5,6} |        3
+  3 | {7,8}   |        2
+  4 | {0}     |        1
+(4 rows)
+```
 
-[error_views.py](https://github.com/twtrubiks/django-tutorial/blob/master/django_tutorial/views/error_views.py) 你也可以模仿 django 的 source code，可參考 [django/views/defaults.py](https://github.com/django/django/blob/master/django/views/defaults.py)，
-
-我是用比較偷懶快速的寫法:smiley:
-
-最後就是在 [django_tutorial/urls.py](https://github.com/twtrubiks/django-tutorial/blob/master/django_tutorial/urls.py) 設定 handler404 以及 handler500，
-
-因為我們已經設定好 `view_404` 以及 `view_500` 了，所以只需要去 overridden，
-
-[django_tutorial/urls.py](https://github.com/twtrubiks/django-tutorial/blob/master/django_tutorial/urls.py) 可參考如下，
+看一下 table, 主要是看 tags, 它的 type 是 text[]
 
 ```python
-....
-
-handler404 = "django_tutorial.views.error_views.view_404"
-handler500 = "django_tutorial.views.error_views.view_500"
-
-....
-
+postgres=# \d public.music_tag;
+                          Table "public.music_tag"
+  Column  |  Type  | Collation | Nullable |             Default
+----------+--------+-----------+----------+----------------------------------
+ id       | bigint |           | not null | generated by default as identity
+ tags     | text[] |           | not null |
+ music_id | bigint |           | not null |
 ```
 
-更多詳細資料可參考 [customizing-error-views](https://docs.djangoproject.com/en/1.11/topics/http/views/#customizing-error-views)。
+可以使用 [overlap](https://docs.djangoproject.com/en/5.0/ref/contrib/postgres/fields/#overlap) (Uses the SQL operator `&&`)
 
-## 後記
+```python
+Music.objects.filter(musictag__tags__overlap=['7', '0', '3'])
+<QuerySet [<Music: Music object (4)>, <Music: Music object (2)>, <Music: Music object (1)>]>
+```
 
-我是先接觸 [Flask](http://flask.pocoo.org/)，後來才接觸到 [Django](https://github.com/django/django) ，
+介紹 [JSONField](https://docs.djangoproject.com/en/5.0/ref/models/fields/#jsonfield)
 
-有些人一開始應該也會和我一樣覺得 [Django](https://github.com/django/django) 的設定很多，非常麻煩，
+範例資料如下
 
-但其實了解他之後，會發現他並沒有想像中的那麼複雜，而且功能非常強大。
+```sql
+postgres=# SELECT * FROM public.music;
+ id | song | singer | count |      last_modify_date      |          created           | sheet_id |    localization
+----+------+--------+-------+----------------------------+----------------------------+----------+--------------------
+  4 | data | test   |     0 | 2023-10-07 04:41:00.204+00 | 2023-10-07 03:41:00.204+00 |        3 | {"zh_tw": "data"}
+  3 | song | AKB48  |     3 | 2023-10-07 03:41:00.204+00 | 2023-10-07 03:41:00.204+00 |        1 | {"zh_tw": "test"}
+  2 | test | AKB48  |     2 | 2023-10-07 03:40:55.581+00 | 2023-10-07 03:40:55.581+00 |        1 | {"es_US": "test2"}
+  1 | song | AKB48  |     1 | 2023-10-07 03:40:42.256+00 | 2023-10-07 03:40:42.256+00 |        1 | {"zh_hk": "bbb"}
+(4 rows)
+```
 
-如果意猶未盡，延伸閱讀 :satisfied:
+看一下 table, 主要是看 localization, 它的 type 是 jsonb
 
-* [Django-REST-framework 基本教學 - 從無到有 DRF-Beginners-Guide](https://github.com/twtrubiks/django-rest-framework-tutorial)
+```python
+postgres=# \d public.music;
+                                         Table "public.music"
+      Column      |           Type           | Collation | Nullable |             Default
+------------------+--------------------------+-----------+----------+----------------------------------
+ id               | bigint                   |           | not null | generated by default as identity
+ song             | text                     |           | not null |
+ singer           | text                     |           | not null |
+ count            | integer                  |           |          |
+ last_modify_date | timestamp with time zone |           | not null |
+ created          | timestamp with time zone |           | not null |
+ sheet_id         | bigint                   |           |          |
+ localization     | jsonb                    |           |          |
+```
 
-* [django_social_login_tutorial](https://github.com/twtrubiks/django_social_login_tutorial) - 使用 Django 實現一個可以使用社交平台登入並且註冊的網站
+```python
+# 找出 localization 的 zh_tw value 為 data
+Music.objects.filter(localization__zh_tw__icontains='data')
+<QuerySet [<Music: Music object (4)>]>
 
-* [DRF-dataTable-Example-server-side](https://github.com/twtrubiks/DRF-dataTable-Example-server-side) - DataTables Example (server-side) - Python Django REST framework
+# 找出 localization 的 key 是 zh_tw
+Music.objects.filter(localization__has_key='zh_tw')
+<QuerySet [<Music: Music object (4)>, <Music: Music object (3)>]>
 
-* [Django-shop-tutorial 基本教學 - 從無到有 Django-shop-tutorial 📝](https://github.com/twtrubiks/django-shop-tutorial) - 使用 Django 建立一個簡易版購物網站 😄
+# 找出 localization 的 key 是 es_US or zh_hk
+Music.objects.filter(localization__has_any_keys=['es_US', 'zh_hk'])
+<QuerySet [<Music: Music object (2)>, <Music: Music object (1)>]>
+```
 
-* [django-celery-tutorial](https://github.com/twtrubiks/django-celery-tutorial) - 使用 Django 結合 Celery 😄
+介紹 `query.select_for_update()` 官網 可參考 [select-for-update](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#select-for-update)
 
-* [django-recaptcha-tutorial](https://github.com/twtrubiks/django_recaptcha_tutorial) -  Django 結合 Google's reCAPTCHA 😄
 
-* [Deploying_Django_To_Heroku_Tutorial](https://github.com/twtrubiks/Deploying_Django_To_Heroku_Tutorial) - Deploying a Django App To Heroku Tutorial
+`SELECT ... FOR UPDATE`
 
-* [認識 Django OneToOneField , ForeignKey ,ManyToManyField](https://github.com/twtrubiks/django-field-tutorial)
+```python
+>>> from musics.models import Music
+>>> from django.db import transaction
+>>> with transaction.atomic():
+...     Music.objects.select_for_update().get(id=2)
+...
+SELECT "music"."id",
+       "music"."song",
+       "music"."singer",
+       "music"."count",
+       "music"."last_modify_date",
+       "music"."created",
+       "music"."sheet_id"
+  FROM "music"
+ WHERE "music"."id" = 2
+ LIMIT 21
+   FOR UPDATE
+```
 
-* [結合 Django + jQuery 實現無限捲軸 Infinite Scroll 📝](https://github.com/twtrubiks/ptt_beauty_infinite_scroll)
+`SELECT ... FOR UPDATE SKIP LOCKED`
+
+```python
+>>> from musics.models import Music
+>>> from django.db import transaction
+>>> with transaction.atomic():
+...     Music.objects.select_for_update(skip_locked=True).get(id=2)
+...
+SELECT "music"."id",
+       "music"."song",
+       "music"."singer",
+       "music"."count",
+       "music"."last_modify_date",
+       "music"."created",
+       "music"."sheet_id"
+  FROM "music"
+ WHERE "music"."id" = 2
+ LIMIT 21
+   FOR UPDATE SKIP LOCKED
+```
+
+更多資訊可參考我之前介紹的 [Postgresql Lock FOR UPDATE](https://github.com/twtrubiks/postgresql-note/tree/main/pg-lock-tutorial#for-update)
+
+`values`
+
+只回傳特定 fields 的值(dict), 而不是回傳整個 model.
+
+```text
+Returns a QuerySet that returns dictionaries, rather than model instances, when used as an iterable.
+```
+
+官網可參考 [values](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#values)
+
+```python
+>>> from musics.models import Music
+>>> Music.objects.filter(id=2).values('id', 'song')
+<QuerySet [{'id': 2, 'song': 'test_data'}]>
+```
+
+`values-list`
+
+類似 values, 但回傳 tuples.
+
+```text
+This is similar to values() except that instead of returning dictionaries, it returns tuples when iterated over.
+```
+
+官網可參考 [values-list](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#values-list)
+
+```python
+>>> from musics.models import Music
+>>> Music.objects.filter(id=2).values_list('id', 'song')
+<QuerySet [(2, 'test_data')]>
+
+>>> # 也可以取 ForeignKey 的資料
+>>> Music.objects.filter(id=2).values_list('id', 'song', 'sheet__name')
+<QuerySet [(2, 'test', 'sheet_1')]>
+
+>>> Music.objects.filter(id=2).values_list('id', flat=True)
+<QuerySet [2]>
+
+# there is more than one field
+>>> Music.objects.filter(id=2).values_list('id', 'song', named=True)
+<QuerySet [Row(id=2, song='test_data')]>
+```
+
+`exists`
+
+官網可參考 [exists](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#django.db.models.query.QuerySet.exists)
+
+```python
+>>> from musics.models import Music
+>>> Music.objects.filter(id=2).exists()
+SELECT 1 AS "a"
+  FROM "music"
+ WHERE "music"."id" = 2
+ LIMIT 1
+
+True
+```
+
+`only`
+
+只使用選擇的字段.
+
+官網可參考 [only](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#only)
+
+```python
+>>> from musics.models import Music
+>>> Music.objects.only('song')
+SELECT "music"."id",
+       "music"."song"
+  FROM "music"
+ LIMIT 21
+
+>>> # 注意順序性, 只有最後的會生效
+>>> Music.objects.only('song', 'singer').only('count')
+SELECT "music"."id",
+       "music"."count"
+  FROM "music"
+ LIMIT 21
+```
+
+`defer`
+
+和 only 相反, 排除選擇的字段
+
+官網可參考 [defer](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#defer)
+
+```python
+>>> from musics.models import Music
+>>> # 排除 'song', 'singer', 'created'
+>>> Music.objects.defer('song', 'singer', 'created')
+SELECT "music"."id",
+       "music"."count",
+       "music"."last_modify_date",
+       "music"."sheet_id",
+       "music"."localization"
+  FROM "music"
+ LIMIT 21
+```
+
+`reverse`
+
+官網可參考 [reverse](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#reverse)
+
+這個我覺的沒什麼用, 因為直接使用 `order_by("id")` `order_by("-id")` 控制就可以了.
+
+```python
+>>> from musics.models import Music
+>>> # 需要搭配 orderby
+>>> Music.objects.all().only("singer").order_by("id")
+SELECT "music"."id",
+       "music"."singer"
+  FROM "music"
+ ORDER BY "music"."id" ASC
+
+>>> Music.objects.all().only("singer").order_by("id").reverse()
+SELECT "music"."id",
+       "music"."singer"
+  FROM "music"
+ ORDER BY "music"."id" DESC
+```
+
+`latest` `earliest`
+
+存在的目的只是為了可讀性.
+
+官網可參考 [latest](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#latest)
+
+官網可參考 [earliest](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#earliest)
+
+```python
+>>> from musics.models import Music
+>>> Music.objects.filter(created__isnull=False).latest("singer")
+SELECT "music"."id",
+       "music"."song",
+       "music"."singer",
+       "music"."count",
+       "music"."last_modify_date",
+       "music"."created",
+       "music"."sheet_id",
+       "music"."localization"
+  FROM "music"
+ WHERE "music"."created" IS NOT NULL
+ ORDER BY "music"."singer" DESC
+ LIMIT 1
+
+>>> Music.objects.filter(created__isnull=False).earliest("singer")
+SELECT "music"."id",
+       "music"."song",
+       "music"."singer",
+       "music"."count",
+       "music"."last_modify_date",
+       "music"."created",
+       "music"."sheet_id",
+       "music"."localization"
+  FROM "music"
+ WHERE "music"."created" IS NOT NULL
+ ORDER BY "music"."singer" ASC
+ LIMIT 1
+```
+
+
+`explain`
+
+可以看 execution plan
+
+官網可參考 [explain](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#explain)
+
+```python
+>>> from musics.models import Music
+>>> Music.objects.only('id', 'singer').filter(created__isnull=False).explain()
+EXPLAIN SELECT "music"."id",
+       "music"."singer"
+  FROM "music"
+ WHERE "music"."created" IS NOT NULL
+'Seq Scan on music  (cost=0.00..15.10 rows=507 width=40)\n  Filter: (created IS NOT NULL)'
+
+>>> Music.objects.only('id', 'singer').filter(pk=2).explain()
+EXPLAIN SELECT "music"."id",
+       "music"."singer"
+  FROM "music"
+ WHERE "music"."id" = 2
+
+'Index Scan using music_pkey on music  (cost=0.15..8.17 rows=1 width=40)\n  Index Cond: (id = 2)'
+```
+
+`exact`
+
+Exact match. 忽略大小寫可使用 `iexact`
+
+官網可參考 [exact](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#exact)
+
+```python
+>>> from musics.models import Music
+
+>>> Music.objects.filter(id__exact=1).values('id')
+SELECT "music"."id"
+  FROM "music"
+ WHERE "music"."id" = 1
+
+<QuerySet [{'id': 1}]>
+
+
+>>> Music.objects.filter(song__exact=None).values('id')
+SELECT "music"."id"
+  FROM "music"
+ WHERE "music"."song" IS NULL
+
+<QuerySet []>
+
+>>> Music.objects.filter(song__exact="").values('id')
+SELECT "music"."id"
+  FROM "music"
+ WHERE "music"."song" = ''
+
+<QuerySet []>
+```
+
+其實這個語法和底下的語法所產生的 SQL 是一樣的,
+
+```python
+Music.objects.filter(song="").values('id')
+```
+
+`distinct`
+
+官網可參考 [distinct](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#distinct)
+
+```python
+>>> from musics.models import Music
+>>> Music.objects.distinct("count").values_list('id')
+SELECT DISTINCT
+    ON ("music"."count") "music"."id"
+  FROM "music"
+
+<QuerySet [(4,), (1,), (2,), (3,)]>
+```
+
+如果搭配 order_by 要稍微注意一下
+
+```python
+>>> from musics.models import Music
+>>> Music.objects.order_by("count").distinct("count").values_list('id')
+SELECT DISTINCT
+    ON ("music"."count") "music"."id"
+  FROM "music"
+ ORDER BY "music"."count" ASC
+
+<QuerySet [(2,)]>
+```
+
+如果 distinct 的欄位沒有在 order_by 中會錯誤 😱, 如下
+
+```python
+>>> from musics.models import Music
+>>> Music.objects.order_by("id").distinct("count").values_list('id')
+django.db.utils.ProgrammingError: SELECT DISTINCT ON expressions must match initial ORDER BY expressions
+```
+
+`exclude`
+
+官網可參考 [exclude](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#exclude)
+
+```python
+>>> from musics.models import Music
+>>> Music.objects.exclude(singer="test").values_list('id')
+
+SELECT "music"."id"
+  FROM "music"
+ WHERE NOT ("music"."singer" = 'test')
+
+<QuerySet [(1,), (2,), (3,)]>
+```
+
+`contains`
+
+官網可參考 [contains](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#contains)
+
+```python
+>>> Music.objects.filter(song__contains='on').values_list('id', 'song')
+SELECT "music"."id",
+       "music"."song"
+  FROM "music"
+ WHERE "music"."song"::text LIKE '%on%'
+
+<QuerySet [(3, 'song'), (1, 'song')]>
+```
+
+`icontaons`
+
+Case-insensitive 忽略大小寫
+
+官網可參考 [icontaons](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#contains)
+
+```python
+>>> Music.objects.filter(song__icontains='on').values_list('id', 'song')
+SELECT "music"."id",
+       "music"."song"
+  FROM "music"
+ WHERE UPPER("music"."song"::text) LIKE UPPER('%on%')
+
+<QuerySet [(3, 'song'), (1, 'song')]>
+```
+
+假如我想要同時找出 song 有包含 "on" 或是 "es" 的, 必須搭配 `Q`
+
+```python
+>>> from django.db.models import Q
+>>> Music.objects.filter(Q(song__icontains='on') | Q(song__icontains='es'))
+SELECT "music"."id",
+       "music"."song",
+       "music"."singer",
+       "music"."count",
+       "music"."last_modify_date",
+       "music"."created",
+       "music"."sheet_id",
+       "music"."localization"
+  FROM "music"
+ WHERE (UPPER("music"."song"::text) LIKE UPPER('%on%') OR UPPER("music"."song"::text) LIKE UPPER('%es%'))
+
+<QuerySet [<Music: Music object (3)>, <Music: Music object (2)>, <Music: Music object (1)>]>
+```
+
+`startswith`
+
+官網可參考 [startswith](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#startswith)
+
+```python
+>>> Music.objects.filter(song__startswith='te').values_list('id', 'song')
+SELECT "music"."id",
+       "music"."song"
+  FROM "music"
+ WHERE "music"."song"::text LIKE 'te%'
+
+<QuerySet [(2, 'test')]>
+```
+
+`endswith`
+
+官網可參考 [endswith](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#endswith)
+
+```python
+>>> Music.objects.filter(song__endswith='t').values_list('id', 'song')
+SELECT "music"."id",
+       "music"."song"
+  FROM "music"
+ WHERE "music"."song"::text LIKE '%t'
+
+<QuerySet [(2, 'test')]>
+```
+
+`date`
+
+官網可參考 [date](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#date)
+
+```python
+>>> from datetime import datetime, date
+>>> Music.objects.filter(last_modify_date__date=date(2023, 10, 7)).values_list('id', 'song')
+SELECT "music"."id",
+       "music"."song"
+  FROM "music"
+ WHERE ("music"."last_modify_date" AT TIME ZONE 'UTC')::date = '2023-10-07'::date
+
+<QuerySet [(4, 'data'), (3, 'song'), (2, 'test'), (1, 'song')]>
+```
+
+`range`
+
+官網可參考 [range](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#range)
+
+```python
+>>> from datetime import datetime, date
+>>> start_date = date(2023, 1, 1)
+>>> end_date = date(2023, 12, 31)
+>>> Music.objects.filter(last_modify_date__range=(start_date, end_date)).values_list('id', 'song')
+SELECT "music"."id",
+       "music"."song"
+  FROM "music"
+ WHERE "music"."last_modify_date" BETWEEN '2023-01-01T00:00:00+00:00'::timestamptz AND '2023-12-31T00:00:00+00:00'::timestamptz
+
+<QuerySet [(4, 'data'), (3, 'song'), (2, 'test'), (1, 'song')]>
+```
+
+`isnull`
+
+官網可參考 [isnull](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#isnull)
+
+```python
+>>> Music.objects.filter(sheet__isnull=True).values_list('id', 'song')
+SELECT "music"."id",
+       "music"."song"
+  FROM "music"
+ WHERE "music"."sheet_id" IS NULL
+
+<QuerySet []>
+```
+
+`aggregate`
+
+直接把他想成就是 聚合函數,
+
+官網可參考 [aggregation](https://docs.djangoproject.com/en/5.0/topics/db/aggregation/) (值得花時間看看)
+
+```python
+>>> from musics.models import Music
+>>> from django.db.models import Avg, Sum
+>>> Music.objects.aggregate(sum_count=Sum('count'))
+SELECT SUM("music"."count") AS "sum_count"
+  FROM "music"
+Execution time: 0.000510s [Database: default]
+{'sum_count': 6}
+
+>>> Music.objects.all().aggregate(avg_count=Avg('count'))
+SELECT AVG("music"."count") AS "avg_count"
+  FROM "music"
+Execution time: 0.000367s [Database: default]
+{'avg_count': 2.0}
+```
+
+`annotate`
+
+原理一樣是使用 group by, 但是它強大的地方在於, 可以在原本的 model 上增加新的字段,
+
+```python
+>>> from musics.models import Music, Sheet
+>>> from django.db.models import Avg, Sum, Count
+
+>>> # 計算出每個 sheet 底下有多少個 music
+>>> Sheet.objects.annotate(num_music=Count("music"))
+SELECT "musics_sheet"."id",
+       "musics_sheet"."name",
+       COUNT("music"."id") AS "num_music"
+  FROM "musics_sheet"
+  LEFT OUTER JOIN "music"
+    ON ("musics_sheet"."id" = "music"."sheet_id")
+ GROUP BY "musics_sheet"."id"
+ LIMIT 21
+
+>>> sheet = Sheet.objects.annotate(num_music=Count("music"))
+>>> sheet[0].num_music # 可以使用計算出來的字段
+>>> sheet.filter(num_music__gt=1) # 甚至可以使用 ORM 來過濾自定義的字段
+
+>>> # 來看一下 SQL, 其實就是用 HAVING
+>>> Sheet.objects.annotate(num_music=Count("music")).filter(num_music__gt=1)
+SELECT "tutorial_sheet"."id",
+       "tutorial_sheet"."name",
+       COUNT("music"."id") AS "num_music"
+  FROM "tutorial_sheet"
+  LEFT OUTER JOIN "music"
+    ON ("tutorial_sheet"."id" = "music"."sheet_id")
+ GROUP BY "tutorial_sheet"."id"
+HAVING COUNT("music"."id") > 1
+ LIMIT 21
+
+
+>>> # 如果想要排序, 可以再加上 order_by
+>>> Sheet.objects.annotate(num_music=Count("music")).order_by("-num_music")
+SELECT "musics_sheet"."id",
+       "musics_sheet"."name",
+       COUNT("music"."id") AS "num_music"
+  FROM "musics_sheet"
+  LEFT OUTER JOIN "music"
+    ON ("musics_sheet"."id" = "music"."sheet_id")
+ GROUP BY "musics_sheet"."id"
+ ORDER BY 3 DESC
+ LIMIT 21
+
+
+>>> # 依照 song 進行 group by, 並且針對 count 進行 sum 運算
+>>> Music.objects.values('song').annotate(sum_count=Sum('count'))
+SELECT "music"."song",
+       SUM("music"."count") AS "sum_count"
+  FROM "music"
+ GROUP BY "music"."song"
+ LIMIT 21
+Execution time: 0.000687s [Database: default]
+<QuerySet [{'song': 'test', 'sum_count': 2}, {'song': 'song', 'sum_count': 4}]>
+```
+
+`conditional-expressions`
+
+在資料庫中的 When Case, django 也可以使用
+
+官網可參考 [conditional-expressions](https://docs.djangoproject.com/en/5.0/ref/models/conditional-expressions/)
+
+```python
+>>> from musics.models import Music
+>>> from django.db.models import Case, When, Value
+>>> Music.objects.annotate(
+...      my_data=Case(
+...          When(count=1, then=Value("5%")),
+...          When(count=2, then=Value("10%")),
+...          default=Value("0%")
+...       )
+...     ).values_list("id", "my_data")
+SELECT "music"."id",
+       CASE WHEN "music"."count" = 1 THEN '5%'
+            WHEN "music"."count" = 2 THEN '10%'
+            ELSE '0%'
+             END AS "my_data"
+  FROM "music"
+ LIMIT 21
+Execution time: 0.000468s [Database: default]
+<QuerySet [(1, '5%'), (2, '10%'), (3, '0%')]>
+```
+
+`bulk-create`
+
+[bulk-create](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#bulk-create)
+
+```python
+from musics.models import Music
+Music.objects.bulk_create([
+    Music(song="song11", singer="singer11"),
+    Music(song="song22", singer="singer22"),
+])
+```
+
+對應的原生 sql 如下,
+
+```sql
+INSERT INTO "music" ("song", "singer", "count", "last_modify_date", "created", "sheet_id")
+VALUES ('song11', 'singer11', NULL, '2024-04-09 12:04:46.046720', '2024-04-09 12:04:46.046765', NULL), ('song22', 'singer22', NULL, '2024-04-09 12:04:46.046796', '2024-04-09 12:04:46.046811', NULL)
+```
+
+還有一個 batch_size 可以使用, 用來完成批次(一次最多新增幾比).
+
+例如
+
+```python
+Music.objects.bulk_create([
+    Music(song="song11", singer="singer11"),
+    Music(song="song22", singer="singer22"),
+    Music(song="song33", singer="singer33"),
+    Music(song="song44", singer="singer44"),
+], 2)
+```
+
+如果你看原生 SQL 你會發現執行了兩個 INSERT INTO.
+
+`bulk-update`
+
+[bulk-update](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#bulk-update)
+
+```python
+from musics.models import Music
+musics = []
+for index, music in enumerate(Music.objects.all()):
+    music.song = f"song_{index}"
+    musics.append(music)
+
+bulk_update_count = Music.objects.bulk_update(musics, ['song'])
+```
+
+bulk_update_count 會回傳更新的比數.
+
+對應的原生 sql 如下,
+
+```sql
+UPDATE "music"
+   SET "song" =
+      CASE WHEN ("music"."id" = 1) THEN 'song_0'
+           WHEN ("music"."id" = 2) THEN 'song_1'
+      ELSE NULL
+      END
+ WHERE "music"."id" IN (1, 2)
+```
+
+`get_or_create`
+
+[get_or_create](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#get-or-create)
+
+如果有符合的資料且只有一比就回傳, 沒有的話就建立.
+
+```python
+from musics.models import Music
+obj, created = Music.objects.get_or_create(song="song113")
+```
+
+obj 會回傳物件, created 則會回傳是否有建立.
+
+為了避免 concurrent requests 的錯誤, 透過 get_or_create 會更好,
+
+如果今天多比被找到, 會跳出 raises MultipleObjectsReturned.
+
+`update_or_create`
+
+[update_or_create](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#get-or-create)
+
+
+```python
+from musics.models import Music
+obj, created = Music.objects.update_or_create(
+    song="song113",
+    defaults={"song": "song_default"},
+)
+```
+
+obj 會回傳物件, created 則會回傳是否有建立.
+
+如果找到 song 為 song113, 就將找到的單比的 song 更新為 song_default,
+
+如果沒找到, 就用 create_defaults 裡面的內容建立,
+
+如果今天多比被找到, 會跳出 raises MultipleObjectsReturned.
+
+`in-bulk`
+
+[in-bulk](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#in-bulk)
+
+```python
+from musics.models import Music
+Music.objects.in_bulk([1, 2])
+# {1: <Music: Music object (1)>, 2: <Music: Music object (2)>}
+
+# 如果沒有指定, 會找出全部的
+Music.objects.in_bulk()
+```
+
+`Func() expressions`
+
+使用 database functions like COALESCE and LOWER
+
+[Func() expressions](https://docs.djangoproject.com/en/5.0/ref/models/expressions/#func-expressions)
+
+範例, 將字串改成大寫,
+
+```python
+>>> from django.db.models import Func
+>>> from musics.models import Music
+>>> class Upper(Func):
+...     function = "UPPER"
+...
+
+>>> Music.objects.annotate(song_upper=Upper("song")).values_list("id", "song_upper", "song")
+SELECT "music"."id",
+       "music"."song",
+       UPPER("music"."song") AS "song_upper"
+  FROM "music"
+
+<QuerySet [(4, 'DATA', 'data'), (3, 'SONG', 'song'), (2, 'TEST', 'test'), (1, 'SONG', 'song')]>
+```
+
+範例, 將 array 全部展開,
+
+```python
+>>> from django.db.models import Func, CharField
+>>> from musics.models import MusicTag
+>>> class Unnest(Func):
+...     function = "unnest"
+...     output_field = CharField()
+...
+
+>>> MusicTag.objects.annotate(tag_name=Unnest("tags")).values_list("id", "tag_name", "tags")
+SELECT "music_tag"."id",
+       "music_tag"."tags",
+       unnest("music_tag"."tags") AS "tag_name"
+  FROM "music_tag"
+
+<QuerySet [(1, '2', ['2', '3']), (1, '3', ['2', '3']), (2, '4', ['4', '5', '6']), (2, '5', ['4', '5', '6']), (2, '6', ['4', '5', '6']), (3, '7', ['7', '8']), (3, '8', ['7', '8']), (4, '0', ['0'])]>
+```
+
+`custom lookups`
+
+[How to write custom lookups](https://docs.djangoproject.com/en/5.0/howto/custom-lookups/)
+
+自己定義 lookups, 可參考 [models.py](https://github.com/twtrubiks/django-tutorial/blob/django4_and_orm/musics/models.py#L44)
+
+```python
+@Field.register_lookup
+class NotEqual(Lookup):
+    lookup_name = "ne"
+
+    def as_sql(self, compiler, connection):
+        lhs, lhs_params = self.process_lhs(compiler, connection)
+        rhs, rhs_params = self.process_rhs(compiler, connection)
+        params = lhs_params + rhs_params
+        return "%s <> %s" % (lhs, rhs), params
+```
+
+如果想要 debug `as_sql` 裡面的東西, 要觸發這個中斷點請使用以下指令,
+
+這樣你就可以看出它組出什麼字串.
+
+```python
+print(Music.objects.filter(song__ne='test').query)
+```
+
+經過上面這樣的定義, 可以使用自己定義的 `ne`,
+
+`<> 'test'` 在 SQL 中的意思是不等於 test 的意思
+
+```python
+>>> Music.objects.filter(song__ne='test').values_list("song")
+SELECT "music"."song"
+  FROM "music"
+ WHERE "music"."song" <> 'test'
+
+<QuerySet [('data',), ('song',), ('song',)]>
+```
+
+## Performing raw SQL queries
+
+官網可參考 [Performing raw SQL queries](https://docs.djangoproject.com/en/5.0/topics/db/sql/)
+
+```python
+>>> result = Music.objects.raw('SELECT * FROM music where song ilike %s', [f"%song%"])
+>>> [(rec.id, rec.song) for rec in result]
+[(3, 'song'), (1, 'song')]
+```
 
 ## 執行環境
 
-* Python 3.4.3
+* Python 3.10.12
 
 ## Reference
 

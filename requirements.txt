@@ -1,0 +1,5 @@
+django==5.0.6
+psycopg2-binary==2.9.9
+django-extensions==3.2.3
+gnureadline==8.2.10
+pyyaml==6.0.1
