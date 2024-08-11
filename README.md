@@ -7,7 +7,7 @@
 
 [Django](https://github.com/django/django)  非常強大，尤其是 [Django REST framework](http://www.django-rest-framework.org/) ( DRF )，打造 REST API 極為方便快速，
 
-在這裡先帶大家進入 [Django](https://github.com/django/django) 的世界  :smile:
+在這裡先帶大家進入 [Django](https://github.com/django/django) 的世界 :smile:
 
 - [django4_and_orm](https://github.com/twtrubiks/django-tutorial/tree/django4_and_orm) - ORM Lock 操作.
 
@@ -37,7 +37,7 @@
 
 這樣我們就會知道要先去 template 中找問題，而如果是關於資料庫的問題，則可能就要先去 Model
 
-中找，總之，就是不會像一隻無頭蒼蠅一樣不知道要去哪裡找問題:relaxed:
+中找，總之，就是不會像一隻無頭蒼蠅一樣不知道要去哪裡找問題 :relaxed:
 
 最後簡單將 Django 的 MTV 和 ASP.NET 中的 MVC 比較一下，
 
@@ -73,7 +73,7 @@
 
 用 [PyCharm](https://www.jetbrains.com/pycharm/) 建立 project 還有一個好處，就是一些設定會先幚你設定好，不用全部重新自己動手設設定。
 
-這邊補充一下，因為蠻多人詢問的:grimacing:
+這邊補充一下，因為蠻多人詢問的 :grimacing:
 
 上面這張圖的功能 ( 選項 )，只有 PyCharm Professional 才有這個功能，
 
@@ -253,6 +253,40 @@ migrate ： 根據 makemigrations 建立的檔案，去更新你的 DATABASE 。
 有沒有注意到我們明明在 models.py 裡面就沒有輸入 id ，可是 database 裡面卻有 id 欄位，
 
 這是因為 Django 預設會幫你帶入，所以可以不用設定。
+
+❗ ❗ 這邊提一個狀況, 就是如果你手動去刪除 migrations 資料夾,
+
+然後你重新執行了 `makemigrations`, 正常產生資料夾,
+
+然後你又執行了 `migrate`, 你會發現他說沒有任何改變.
+
+原因是, 在 db 底下的 django_migrations 這張 table 會去紀錄
+
+```sql
+SELECT * FROM public.django_migrations
+```
+
+類似 0001_initial 這樣的東西, 然後正常應該要變 0002_xxx 之類的,
+
+可是現在還是 0001_initial, 所以系統會認為沒有更新, 所以沒有變化,
+
+這時候你需要手動刪除對應的 app name 的那比 record(從資料庫刪除),
+
+然後重新執行 `migrate` 即可,
+
+或是你可以參考 [Reversing migrations](https://docs.djangoproject.com/en/5.0/topics/migrations/#reversing-migrations)
+
+直接去 reverse 整個 app, 重新跑一次.
+
+```cmd
+python manage.py migrate musics zero
+```
+
+也可以透過指令去刪除 django_migrations 的 record 紀錄,
+
+```cmd
+python manage.py migrate musics 0001
+```
 
 ### Django ORM
 
@@ -563,7 +597,7 @@ handler500 = "django_tutorial.views.error_views.view_500"
 
 ## Donation
 
-文章都是我自己研究內化後原創，如果有幫助到您，也想鼓勵我的話，歡迎請我喝一杯咖啡:laughing:
+文章都是我自己研究內化後原創，如果有幫助到您，也想鼓勵我的話，歡迎請我喝一杯咖啡 :laughing:
 
 ![alt tag](https://i.imgur.com/LRct9xa.png)
 
