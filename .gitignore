@@ -20,7 +20,6 @@ lib64/
 parts/
 sdist/
 var/
-migrations/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -89,3 +88,5 @@ ENV/
 # Rope project settings
 .ropeproject
 .idea/
+
+.vscode/

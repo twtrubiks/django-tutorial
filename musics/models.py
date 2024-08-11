@@ -1,24 +1,33 @@
 from django.db import models
 
-TYPE_CHOICES = (
-    ('T1', 'type 1'),
-    ('T2', 'type 2'),
-    ('T3', 'type 3'),
-    ('T4', 'type 4'),
-)
+class MusicSheetManager(models.Manager):
 
+    def with_counts(self):
+        return self.count()
 
-# Create your models here.
+class Sheet(models.Model):
+    name = models.CharField(default="sheet name", max_length=64)
+
+    objects = MusicSheetManager()
+
+class MusicManager(models.Manager):
+
+    def get_queryset(self):
+        return super().get_queryset().filter(song="song")
+
+    def with_counts(self):
+        return self.count()
+
 class Music(models.Model):
     song = models.TextField(default="song")
     singer = models.TextField(default="AKB48")
+    count = models.IntegerField(blank=True, null=True)
     last_modify_date = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
-    type = models.CharField(
-        max_length=2,
-        choices=TYPE_CHOICES,
-        default="T1"
-    )
+    sheet = models.ForeignKey(Sheet, on_delete=models.CASCADE, null=True)
+
+    objects = models.Manager()  # The default manager.
+    custom_objects = MusicManager()  # The new manager.
 
     class Meta:
         db_table = "music"
