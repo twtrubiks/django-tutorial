@@ -74,7 +74,11 @@ success
 handle - hello django custom management commands: test
 ```
 
-也可以搭配 [Linux 指令教學-Crontab](https://github.com/twtrubiks/linux-note/tree/master/crontab-tutorual) 來執行定期需要執行的內容.
+如果你想 透過 vscode debug django custom management commands,
+
+可參考 [設定 Django Shell 中斷點](https://github.com/twtrubiks/vscode_django_note?tab=readme-ov-file#%E8%A8%AD%E5%AE%9A-django-shell-%E4%B8%AD%E6%96%B7%E9%BB%9E).
+
+如果想定期執行, 可以搭配 [Linux 指令教學-Crontab](https://github.com/twtrubiks/linux-note/tree/master/crontab-tutorual) 來執行定期需要執行的內容.
 
 ## 執行環境
 
